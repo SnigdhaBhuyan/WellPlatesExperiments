@@ -1,158 +1,56 @@
 /**
- * PlateMaster Pro - Advanced Laboratory Tool
- * Complete JavaScript Application with Improved Visualization
+ * PlateMaster Pro - Enhanced JavaScript Application
+ * Features: Scientific notation support, customizable parameters, PNG export with labels
  */
 
 class PlateMasterPro {
     constructor() {
-        // Plate configurations with accurate surface areas and volumes
+        // Enhanced plate configurations with customizable parameters
         this.plateConfigs = {
             "6": { 
-                rows: 2, 
-                cols: 3, 
+                rows: 2, cols: 3, 
                 rowLabels: ['A', 'B'],
-                surfaceArea: 9.5, // cm² per well
-                maxVolume: 3500, // µL
-                workingVolume: 2500
+                surfaceArea: 9.6, maxVolume: 3500, workingVolume: 2500
             },
             "12": { 
-                rows: 3, 
-                cols: 4, 
+                rows: 3, cols: 4, 
                 rowLabels: ['A', 'B', 'C'],
-                surfaceArea: 3.8,
-                maxVolume: 2200,
-                workingVolume: 1500
+                surfaceArea: 3.8, maxVolume: 2200, workingVolume: 1500
             },
             "24": { 
-                rows: 4, 
-                cols: 6, 
+                rows: 4, cols: 6, 
                 rowLabels: ['A', 'B', 'C', 'D'],
-                surfaceArea: 1.9,
-                maxVolume: 1000,
-                workingVolume: 750
+                surfaceArea: 1.9, maxVolume: 1000, workingVolume: 750
             },
             "48": { 
-                rows: 6, 
-                cols: 8, 
+                rows: 6, cols: 8, 
                 rowLabels: ['A', 'B', 'C', 'D', 'E', 'F'],
-                surfaceArea: 0.75,
-                maxVolume: 500,
-                workingVolume: 350
+                surfaceArea: 0.75, maxVolume: 500, workingVolume: 350
             },
             "96": { 
-                rows: 8, 
-                cols: 12, 
+                rows: 8, cols: 12, 
                 rowLabels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
-                surfaceArea: 0.32,
-                maxVolume: 360,
-                workingVolume: 200
+                surfaceArea: 0.32, maxVolume: 360, workingVolume: 200
             },
             "384": { 
-                rows: 16, 
-                cols: 24, 
+                rows: 16, cols: 24, 
                 rowLabels: Array.from({length: 16}, (_, i) => String.fromCharCode(65 + i)),
-                surfaceArea: 0.087,
-                maxVolume: 80,
-                workingVolume: 50
+                surfaceArea: 0.087, maxVolume: 80, workingVolume: 50
             }
         };
 
-        // Color schemes for different assay types
+        // Professional color schemes
         this.colorSchemes = {
-            default: ['#2563eb', '#dc2626', '#16a34a', '#ca8a04', '#9333ea', '#c2410c', '#0891b2', '#be185d', '#f59e0b', '#6366f1', '#059669', '#d97706'],
-            colorblind: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'],
-            highContrast: ['#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#800000', '#008000']
-        };
-
-        // Unit conversion factors
-        this.conversionFactors = {
-            // Molar conversions
-            'M_mM': 1000,
-            'mM_µM': 1000,
-            'µM_nM': 1000,
-            'nM_pM': 1000,
-            
-            // Mass conversions
-            'g/L_mg/mL': 1,
-            'mg/mL_µg/mL': 1000,
-            'µg/mL_ng/mL': 1000,
-            'ng/mL_pg/mL': 1000,
-            
-            // Volume conversions
-            'L_mL': 1000,
-            'mL_µL': 1000,
-            'µL_nL': 1000,
-            'nL_pL': 1000,
-            
-            // CFU conversions
-            'CFU/mL_CFU/µL': 0.001,
-            'cells/mL_cells/µL': 0.001
-        };
-
-        // Assay templates based on published protocols
-        this.assayTemplates = {
-            'mtt-viability': {
-                name: 'MTT Cell Viability',
-                description: 'Standard MTT viability assay for IC50 determination',
-                groups: ['Control', 'Vehicle', '0.1µM', '0.3µM', '1µM', '3µM', '10µM', '30µM', '100µM'],
-                timepoints: ['72h'],
-                bioReplicates: 6,
-                techReplicates: 1,
-                plateFormat: '96',
-                controls: true,
-                blanks: true
-            },
-            'dose-response': {
-                name: 'Dose-Response Curve',
-                description: '8-point dose response with vehicle control',
-                groups: ['Vehicle', '1nM', '3nM', '10nM', '30nM', '100nM', '300nM', '1µM', '3µM'],
-                timepoints: ['24h', '48h'],
-                bioReplicates: 4,
-                techReplicates: 2,
-                plateFormat: '96',
-                controls: true,
-                blanks: true
-            },
-            'antimicrobial-mic': {
-                name: 'Antimicrobial MIC Assay',
-                description: 'Minimum inhibitory concentration testing',
-                groups: ['Growth Control', 'Sterility Control', '256µg/mL', '128µg/mL', '64µg/mL', '32µg/mL', '16µg/mL', '8µg/mL', '4µg/mL'],
-                timepoints: ['18h'],
-                bioReplicates: 3,
-                techReplicates: 3,
-                plateFormat: '96',
-                controls: true,
-                blanks: false
-            },
-            'time-course': {
-                name: 'Time Course Study',
-                description: 'Monitor changes over multiple time points',
-                groups: ['Control', 'Treatment A', 'Treatment B'],
-                timepoints: ['0h', '2h', '4h', '8h', '24h', '48h'],
-                bioReplicates: 4,
-                techReplicates: 2,
-                plateFormat: '96',
-                controls: true,
-                blanks: true
-            },
-            'elisa-cytokine': {
-                name: 'ELISA Cytokine Assay',
-                description: 'Quantitative ELISA with standard curve',
-                groups: ['Blank', '1000pg/mL', '500pg/mL', '250pg/mL', '125pg/mL', '62.5pg/mL', '31.25pg/mL', 'Sample 1:1', 'Sample 1:2'],
-                timepoints: ['Endpoint'],
-                bioReplicates: 1,
-                techReplicates: 2,
-                plateFormat: '96',
-                controls: false,
-                blanks: true
-            }
+            default: ['#2563eb', '#dc2626', '#16a34a', '#ca8a04', '#9333ea', '#c2410c', '#0891b2', '#be185d'],
+            colorblind: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f'],
+            highContrast: ['#000000', '#ffffff', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
         };
 
         // Application state
         this.currentLayout = [];
         this.currentColors = {};
-        this.settings = this.loadSettings();
         this.zoomLevel = 1;
+        this.settings = this.loadSettings();
         
         this.init();
     }
@@ -160,87 +58,51 @@ class PlateMasterPro {
     init() {
         this.setupEventListeners();
         this.setupTabSwitching();
-        this.loadTemplateCards();
-        this.updateStats();
+        this.setupExpandableSection();
+        this.loadDefaults();
+        this.updatePlateParameters();
         this.drawEmptyPlate();
-        this.showNotification('success', 'Welcome to PlateMaster Pro', 'Advanced laboratory tool ready for use');
+        this.showNotification('success', 'Welcome!', 'PlateMaster Pro is ready for scientific work');
     }
 
     setupEventListeners() {
-        // Plate generation
-        document.getElementById('generate-layout').addEventListener('click', () => {
-            this.generatePlateLayout();
-        });
+        // Main action buttons
+        document.getElementById('generate-layout').addEventListener('click', () => this.generateLayout());
+        document.getElementById('calculate-dilution').addEventListener('click', () => this.calculateDilution());
+        document.getElementById('calculate-cfu').addEventListener('click', () => this.calculateCFU());
+        document.getElementById('convert-units').addEventListener('click', () => this.convertUnits());
 
-        // Tag inputs
+        // Tag inputs with Enter key support
         this.setupTagInput('group-input', 'groups-container');
         this.setupTagInput('timepoint-input', 'timepoints-container');
 
-        // Calculator buttons
-        document.getElementById('calculate-dilution').addEventListener('click', () => {
-            this.calculateDilution();
-        });
+        // Plate controls
+        document.getElementById('zoom-in').addEventListener('click', () => this.adjustZoom(1.2));
+        document.getElementById('zoom-out').addEventListener('click', () => this.adjustZoom(0.8));
+        document.getElementById('fullscreen').addEventListener('click', () => this.toggleFullscreen());
 
-        document.getElementById('calculate-cfu').addEventListener('click', () => {
-            this.calculateCFUDistribution();
-        });
-
-        document.getElementById('convert-units').addEventListener('click', () => {
-            this.convertUnits();
-        });
-
-        document.getElementById('calculate-power').addEventListener('click', () => {
-            this.calculateStatisticalPower();
-        });
+        // Settings and customization
+        document.getElementById('plate-format').addEventListener('change', () => this.updatePlateParameters());
+        document.getElementById('reset-defaults').addEventListener('click', () => this.resetPlateDefaults());
+        document.getElementById('save-settings').addEventListener('click', () => this.saveSettings());
 
         // Real-time unit conversion
-        ['convert-from-value', 'convert-from-unit', 'convert-to-unit'].forEach(id => {
+        ['convert-from', 'convert-from-unit', 'convert-to-unit'].forEach(id => {
             const element = document.getElementById(id);
             if (element) {
-                element.addEventListener('input', () => {
-                    this.convertUnitsRealTime();
-                });
+                element.addEventListener('input', () => this.convertUnitsRealTime());
             }
         });
 
-        // Plate format change
-        document.getElementById('plate-format').addEventListener('change', () => {
-            this.updateQuickStats();
-            this.drawEmptyPlate();
+        // Display options
+        document.getElementById('show-timepoints').addEventListener('change', (e) => {
+            this.settings.showTimepoints = e.target.checked;
+            this.drawPlate();
         });
 
-        // Real-time stats update
-        ['bio-replicates', 'tech-replicates'].forEach(id => {
-            document.getElementById(id).addEventListener('input', () => {
-                this.updateQuickStats();
-            });
-        });
-
-        // Template management
-        document.getElementById('save-template').addEventListener('click', () => {
-            this.saveCurrentTemplate();
-        });
-
-        // Export functions
-        ['png', 'svg', 'csv', 'protocol'].forEach(format => {
-            const btn = document.querySelector(`[onclick="exportPlate('${format}')"]`);
-            if (btn) {
-                btn.onclick = () => this.exportPlate(format);
-            }
-        });
-
-        // Zoom controls
-        document.getElementById('zoom-in').addEventListener('click', () => {
-            this.zoomPlate(1.2);
-        });
-
-        document.getElementById('zoom-out').addEventListener('click', () => {
-            this.zoomPlate(0.8);
-        });
-
-        // Settings
-        document.getElementById('save-settings')?.addEventListener('click', () => {
-            this.saveSettings();
+        document.getElementById('show-replicates').addEventListener('change', (e) => {
+            this.settings.showReplicates = e.target.checked;
+            this.drawPlate();
         });
     }
 
@@ -259,6 +121,15 @@ class PlateMasterPro {
                 // Update content visibility
                 tabContents.forEach(content => content.classList.remove('active'));
                 document.getElementById(`${targetTab}-tab`).classList.add('active');
+            });
+        });
+    }
+
+    setupExpandableSection() {
+        document.querySelectorAll('.expand-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const section = btn.closest('.expandable-section');
+                section.classList.toggle('open');
             });
         });
     }
@@ -303,7 +174,43 @@ class PlateMasterPro {
         return Array.from(container.querySelectorAll('.tag span:first-child')).map(span => span.textContent);
     }
 
-    generatePlateLayout() {
+    // **ENHANCED SCIENTIFIC NOTATION PARSER**
+    parseScientificInput(input) {
+        if (!input || typeof input !== 'string') return NaN;
+        
+        // Clean and normalize input
+        let cleanInput = input.trim()
+            .replace(/×/g, '*')           // Replace × with *
+            .replace(/\^/g, '**')         // Replace ^ with **
+            .replace(/\s+/g, '')          // Remove all spaces
+            .toLowerCase();
+
+        try {
+            // Handle common scientific notation formats
+            if (cleanInput.includes('e')) {
+                // Already in exponential format (1e6, 1.5e-3, etc.)
+                return parseFloat(cleanInput);
+            }
+            
+            // Handle power notation (3*10**6, 1.5*10**-3)
+            if (cleanInput.includes('10**')) {
+                const result = Function(`"use strict"; return (${cleanInput})`)();
+                return typeof result === 'number' && isFinite(result) ? result : NaN;
+            }
+            
+            // Handle simple numbers
+            const simpleNumber = parseFloat(cleanInput);
+            if (!isNaN(simpleNumber)) {
+                return simpleNumber;
+            }
+            
+            return NaN;
+        } catch (error) {
+            return NaN;
+        }
+    }
+
+    generateLayout() {
         const groups = this.getTags('groups-container');
         const timepoints = this.getTags('timepoints-container');
         const bioReps = parseInt(document.getElementById('bio-replicates').value) || 3;
@@ -312,7 +219,6 @@ class PlateMasterPro {
         const includeControls = document.getElementById('include-controls').checked;
         const includeBlanks = document.getElementById('include-blanks').checked;
         const randomize = document.getElementById('randomize-layout').checked;
-        const edgeCorrection = document.getElementById('edge-effect-correction').checked;
 
         // Validation
         if (groups.length === 0) {
@@ -378,7 +284,7 @@ class PlateMasterPro {
             });
         });
 
-        // Add control wells
+        // Add control wells if requested
         if (includeControls) {
             this.currentColors['Positive Control'] = '#f59e0b';
             this.currentColors['Negative Control'] = '#6b7280';
@@ -418,7 +324,7 @@ class PlateMasterPro {
             });
         }
 
-        // Add blank wells
+        // Add blank wells if requested
         if (includeBlanks) {
             this.currentColors['Blank'] = '#06b6d4';
 
@@ -440,25 +346,15 @@ class PlateMasterPro {
             });
         }
 
-        // Apply edge effect correction
-        if (edgeCorrection) {
-            this.applyEdgeEffectCorrection();
-        }
-
         // Randomize if requested
         if (randomize) {
             this.randomizeLayout();
         }
 
-        // Draw the plate
+        // Update display
         this.drawPlate();
-        this.updateLegend();
         this.updateQuickStats();
-        this.updateStats();
-
-        // Update title
-        const expName = document.getElementById('exp-name').value || 'Untitled Experiment';
-        document.getElementById('plate-title').textContent = expName;
+        this.updatePlateTitle();
 
         this.showNotification('success', 'Layout Generated', 
             `Successfully created layout with ${this.currentLayout.length} wells`);
@@ -468,40 +364,6 @@ class PlateMasterPro {
         const row = config.rowLabels[Math.floor(index / config.cols)];
         const col = (index % config.cols) + 1;
         return `${row}${col}`;
-    }
-
-    applyEdgeEffectCorrection() {
-        // Move important samples away from edge wells
-        const plateFormat = document.getElementById('plate-format').value;
-        const config = this.plateConfigs[plateFormat];
-        
-        // Identify edge wells
-        const edgeWells = [];
-        for (let r = 0; r < config.rows; r++) {
-            for (let c = 0; c < config.cols; c++) {
-                if (r === 0 || r === config.rows - 1 || c === 0 || c === config.cols - 1) {
-                    edgeWells.push(this.getWellName(r * config.cols + c, config));
-                }
-            }
-        }
-
-        // Swap experimental wells with controls/blanks if they're on edges
-        this.currentLayout.forEach((well, index) => {
-            if (well.type === 'experimental' && edgeWells.includes(well.well)) {
-                // Find a non-edge control or blank to swap with
-                const swapCandidate = this.currentLayout.find((w, i) => 
-                    i !== index && 
-                    (w.type === 'control' || w.type === 'blank') && 
-                    !edgeWells.includes(w.well)
-                );
-                
-                if (swapCandidate) {
-                    const tempWell = well.well;
-                    well.well = swapCandidate.well;
-                    swapCandidate.well = tempWell;
-                }
-            }
-        });
     }
 
     randomizeLayout() {
@@ -530,199 +392,185 @@ class PlateMasterPro {
         this.drawPlateStructure(config, this.currentLayout);
     }
 
-    // **IMPROVED PLATE VISUALIZATION** - Main Change Here
+    // **ENHANCED PLATE VISUALIZATION WITH BETTER PNG EXPORT SUPPORT**
     drawPlateStructure(config, layout) {
         const { rows, cols, rowLabels } = config;
-        const plateContainer = document.getElementById('plate-container');
+        const container = document.getElementById('plate-container');
         
         // Clear container
-        plateContainer.innerHTML = '';
+        container.innerHTML = '';
 
-        // Create main container with flex layout
-        const mainContainer = document.createElement('div');
-        mainContainer.style.cssText = `
+        // Create main wrapper for plate and legend
+        const mainWrapper = document.createElement('div');
+        mainWrapper.style.cssText = `
             display: flex;
             align-items: flex-start;
             gap: 2rem;
             justify-content: center;
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
             padding: 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
             border-radius: 12px;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
         `;
 
-        // Create plate SVG container
-        const plateDiv = document.createElement('div');
-        plateDiv.style.cssText = `
-            flex: 0 0 auto;
+        // Create plate section
+        const plateSection = document.createElement('div');
+        plateSection.style.cssText = `
             display: flex;
             flex-direction: column;
             align-items: center;
         `;
 
-        // Calculate dimensions for cleaner layout
-        const cellSize = Math.min(50, 400 / Math.max(cols, rows));
-        const padding = 60;
-        const svgWidth = cols * cellSize + padding * 2;
-        const svgHeight = rows * cellSize + padding * 2;
-
-        // Create SVG
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
-        svg.setAttribute('width', Math.min(500, svgWidth));
-        svg.setAttribute('height', Math.min(400, svgHeight));
-        svg.style.transform = `scale(${this.zoomLevel})`;
-        svg.style.cssText += `
+        // Create enhanced table with better labels for PNG export
+        const table = document.createElement('table');
+        table.style.cssText = `
+            border-collapse: collapse;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border: 1px solid #e2e8f0;
+            font-family: 'Inter', sans-serif;
         `;
 
-        // Add subtle grid background
-        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-        const pattern = document.createElementNS('http://www.w3.org/2000/svg', 'pattern');
-        pattern.setAttribute('id', 'grid');
-        pattern.setAttribute('width', cellSize);
-        pattern.setAttribute('height', cellSize);
-        pattern.setAttribute('patternUnits', 'userSpaceOnUse');
-        
-        const gridPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        gridPath.setAttribute('d', `M ${cellSize} 0 L 0 0 0 ${cellSize}`);
-        gridPath.setAttribute('fill', 'none');
-        gridPath.setAttribute('stroke', '#f1f5f9');
-        gridPath.setAttribute('stroke-width', '1');
-        
-        pattern.appendChild(gridPath);
-        defs.appendChild(pattern);
-        svg.appendChild(defs);
+        // Enhanced header row
+        const headerRow = document.createElement('tr');
+        const cornerCell = document.createElement('th');
+        cornerCell.style.cssText = `
+            width: 40px;
+            height: 30px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            font-weight: 600;
+            color: #475569;
+        `;
+        headerRow.appendChild(cornerCell);
 
-        // Background with grid
-        const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        bgRect.setAttribute('width', svgWidth);
-        bgRect.setAttribute('height', svgHeight);
-        bgRect.setAttribute('fill', '#fafafa');
-        svg.appendChild(bgRect);
-
-        const gridRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        gridRect.setAttribute('x', padding);
-        gridRect.setAttribute('y', padding);
-        gridRect.setAttribute('width', cols * cellSize);
-        gridRect.setAttribute('height', rows * cellSize);
-        gridRect.setAttribute('fill', 'url(#grid)');
-        svg.appendChild(gridRect);
-
-        // Draw row labels (A, B, C...)
-        for (let i = 0; i < rows; i++) {
-            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            text.setAttribute('x', padding - 20);
-            text.setAttribute('y', i * cellSize + padding + cellSize / 2);
-            text.setAttribute('text-anchor', 'middle');
-            text.setAttribute('dominant-baseline', 'middle');
-            text.style.cssText = `
-                font-family: 'Inter', sans-serif;
-                font-size: 14px;
+        // Column headers (1, 2, 3...)
+        for (let c = 1; c <= cols; c++) {
+            const th = document.createElement('th');
+            th.textContent = c;
+            th.style.cssText = `
+                width: 35px;
+                height: 30px;
+                background: #f1f5f9;
+                border: 1px solid #cbd5e1;
+                text-align: center;
                 font-weight: 600;
-                fill: #475569;
+                color: #475569;
+                font-size: 0.9rem;
             `;
-            text.textContent = rowLabels[i];
-            svg.appendChild(text);
+            headerRow.appendChild(th);
         }
+        table.appendChild(headerRow);
 
-        // Draw column labels (1, 2, 3...)
-        for (let j = 0; j < cols; j++) {
-            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            text.setAttribute('x', j * cellSize + padding + cellSize / 2);
-            text.setAttribute('y', padding - 20);
-            text.setAttribute('text-anchor', 'middle');
-            text.setAttribute('dominant-baseline', 'middle');
-            text.style.cssText = `
-                font-family: 'Inter', sans-serif;
-                font-size: 14px;
+        // Data rows with enhanced well visualization
+        for (let r = 0; r < rows; r++) {
+            const row = document.createElement('tr');
+            
+            // Row header (A, B, C...)
+            const rowHeader = document.createElement('th');
+            rowHeader.textContent = rowLabels[r];
+            rowHeader.style.cssText = `
+                width: 40px;
+                height: 35px;
+                background: #f1f5f9;
+                border: 1px solid #cbd5e1;
+                text-align: center;
                 font-weight: 600;
-                fill: #475569;
+                color: #475569;
+                font-size: 0.9rem;
             `;
-            text.textContent = j + 1;
-            svg.appendChild(text);
-        }
+            row.appendChild(rowHeader);
 
-        // Draw wells - CLEAN VERSION WITH NO TEXT INSIDE
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < cols; j++) {
-                const wellName = `${rowLabels[i]}${j + 1}`;
+            // Well cells
+            for (let c = 0; c < cols; c++) {
+                const wellName = `${rowLabels[r]}${c + 1}`;
                 const wellData = layout.find(w => w.well === wellName);
                 
-                const cx = j * cellSize + padding + cellSize / 2;
-                const cy = i * cellSize + padding + cellSize / 2;
-                const radius = cellSize * 0.35;
+                const cell = document.createElement('td');
+                cell.style.cssText = `
+                    width: 35px;
+                    height: 35px;
+                    border: 1px solid #cbd5e1;
+                    padding: 2px;
+                    text-align: center;
+                    position: relative;
+                `;
 
-                // Create well circle - CLEAN DESIGN
-                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                circle.setAttribute('cx', cx);
-                circle.setAttribute('cy', cy);
-                circle.setAttribute('r', radius);
+                // Create well circle
+                const circle = document.createElement('div');
                 circle.style.cssText = `
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    margin: auto;
                     cursor: pointer;
                     transition: all 0.2s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
                 `;
 
                 if (wellData) {
-                    circle.setAttribute('fill', wellData.color);
-                    circle.setAttribute('stroke', this.darkenColor(wellData.color, 15));
-                    circle.setAttribute('stroke-width', '2');
+                    circle.style.backgroundColor = wellData.color;
+                    circle.style.border = `2px solid ${this.darkenColor(wellData.color, 15)}`;
                     
-                    // Add subtle shadow for depth
-                    circle.style.filter = 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))';
-                    
-                    // Special styling for different types
-                    if (wellData.type === 'control') {
-                        circle.setAttribute('stroke-dasharray', '3,2');
-                        circle.setAttribute('stroke-width', '2.5');
-                    } else if (wellData.type === 'blank') {
-                        circle.setAttribute('stroke-dasharray', '2,1');
-                        circle.setAttribute('stroke-width', '2');
+                    // Add text overlay for timepoints/replicates if enabled
+                    if (this.settings.showTimepoints || this.settings.showReplicates) {
+                        const textOverlay = document.createElement('div');
+                        textOverlay.style.cssText = `
+                            position: absolute;
+                            bottom: -20px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            font-size: 0.6rem;
+                            color: #374151;
+                            font-weight: 600;
+                            background: rgba(255, 255, 255, 0.9);
+                            padding: 1px 3px;
+                            border-radius: 3px;
+                            white-space: nowrap;
+                        `;
+                        
+                        let overlayText = '';
+                        if (this.settings.showTimepoints) overlayText += wellData.timepoint;
+                        if (this.settings.showReplicates) {
+                            if (overlayText) overlayText += ' ';
+                            overlayText += `B${wellData.bioReplicate}T${wellData.techReplicate}`;
+                        }
+                        textOverlay.textContent = overlayText;
+                        cell.appendChild(textOverlay);
                     }
+
+                    // Enhanced tooltip
+                    circle.title = `Well ${wellName}\nGroup: ${wellData.group}\nTime: ${wellData.timepoint}\nBio Rep: ${wellData.bioReplicate}\nTech Rep: ${wellData.techReplicate}\nType: ${wellData.type}`;
                 } else {
-                    circle.setAttribute('fill', '#f8fafc');
-                    circle.setAttribute('stroke', '#cbd5e1');
-                    circle.setAttribute('stroke-width', '1');
+                    circle.style.backgroundColor = '#f8fafc';
+                    circle.style.border = '2px solid #cbd5e1';
+                    circle.title = `Well ${wellName}\nEmpty`;
                 }
 
                 // Enhanced hover effects
-                circle.addEventListener('mouseenter', (e) => {
+                circle.addEventListener('mouseenter', () => {
                     circle.style.transform = 'scale(1.1)';
-                    circle.style.filter = 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15)) brightness(1.05)';
-                    this.showTooltip(e, wellData, wellName);
+                    circle.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
                 });
 
                 circle.addEventListener('mouseleave', () => {
                     circle.style.transform = 'scale(1)';
-                    circle.style.filter = wellData ? 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))' : 'none';
-                    this.hideTooltip();
+                    circle.style.boxShadow = 'none';
                 });
 
-                circle.addEventListener('mousemove', (e) => this.updateTooltipPosition(e));
-
-                svg.appendChild(circle);
+                cell.appendChild(circle);
+                row.appendChild(cell);
             }
+            table.appendChild(row);
         }
 
-        // Add plate border
-        const border = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        border.setAttribute('x', padding - 10);
-        border.setAttribute('y', padding - 10);
-        border.setAttribute('width', cols * cellSize + 20);
-        border.setAttribute('height', rows * cellSize + 20);
-        border.setAttribute('fill', 'none');
-        border.setAttribute('stroke', '#94a3b8');
-        border.setAttribute('stroke-width', '2');
-        border.setAttribute('stroke-dasharray', '5,5');
-        border.setAttribute('rx', '8');
-        svg.appendChild(border);
+        plateSection.appendChild(table);
 
-        plateDiv.appendChild(svg);
-
-        // Add plate format info below SVG
+        // Add plate information for PNG export
         const plateInfo = document.createElement('div');
         plateInfo.style.cssText = `
             margin-top: 1rem;
@@ -731,27 +579,44 @@ class PlateMasterPro {
             color: #64748b;
             font-weight: 500;
         `;
+        
+        const expName = document.getElementById('exp-name').value || 'Untitled Experiment';
+        const researcher = document.getElementById('researcher-name').value || 'Unknown Researcher';
+        
         plateInfo.innerHTML = `
-            <div>${config.rows}×${config.cols} (${rows * cols} wells)</div>
+            <div style="font-weight: 600; color: #1e293b; margin-bottom: 0.5rem;">${expName}</div>
+            <div>Researcher: ${researcher}</div>
+            <div>${config.rows}×${config.cols} plate (${rows * cols} wells)</div>
             <div>${config.surfaceArea} cm² per well</div>
+            <div style="font-size: 0.8rem; margin-top: 0.5rem;">Generated: ${new Date().toLocaleDateString()}</div>
         `;
-        plateDiv.appendChild(plateInfo);
+        plateSection.appendChild(plateInfo);
 
-        // Create side legend - IMPROVED DESIGN
-        const legendDiv = document.createElement('div');
-        legendDiv.style.cssText = `
-            flex: 0 0 250px;
+        // Create enhanced legend
+        const legendSection = this.createEnhancedLegend(layout);
+
+        mainWrapper.appendChild(plateSection);
+        mainWrapper.appendChild(legendSection);
+        container.appendChild(mainWrapper);
+
+        // Apply zoom
+        container.style.transform = `scale(${this.zoomLevel})`;
+    }
+
+    createEnhancedLegend(layout) {
+        const legendSection = document.createElement('div');
+        legendSection.style.cssText = `
             background: white;
             border-radius: 8px;
             padding: 1.5rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             border: 1px solid #e2e8f0;
-            max-height: 400px;
-            overflow-y: auto;
+            min-width: 200px;
+            max-width: 250px;
         `;
 
-        // Legend title
         const legendTitle = document.createElement('h3');
+        legendTitle.textContent = 'Group Legend';
         legendTitle.style.cssText = `
             margin: 0 0 1rem 0;
             font-size: 1rem;
@@ -763,16 +628,20 @@ class PlateMasterPro {
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #e2e8f0;
         `;
-        legendTitle.innerHTML = '<i class="fas fa-palette" style="color: #3b82f6;"></i> Group Legend';
-        legendDiv.appendChild(legendTitle);
+        
+        const legendIcon = document.createElement('i');
+        legendIcon.className = 'fas fa-palette';
+        legendIcon.style.color = '#3b82f6';
+        legendTitle.insertBefore(legendIcon, legendTitle.firstChild);
+        
+        legendSection.appendChild(legendTitle);
 
-        // Legend items
         if (layout.length > 0) {
             const uniqueGroups = [...new Set(layout.map(item => item.group))];
             
             uniqueGroups.forEach(group => {
-                const legendItem = document.createElement('div');
-                legendItem.style.cssText = `
+                const item = document.createElement('div');
+                item.style.cssText = `
                     display: flex;
                     align-items: center;
                     gap: 0.75rem;
@@ -784,23 +653,19 @@ class PlateMasterPro {
                     transition: all 0.2s ease;
                 `;
 
-                // Color square
                 const colorSquare = document.createElement('div');
                 colorSquare.style.cssText = `
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 4px;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 3px;
                     background-color: ${this.currentColors[group]};
                     border: 2px solid white;
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     flex-shrink: 0;
                 `;
 
-                // Group info
                 const groupInfo = document.createElement('div');
-                groupInfo.style.cssText = `
-                    flex: 1;
-                `;
+                groupInfo.style.cssText = 'flex: 1;';
 
                 const groupName = document.createElement('div');
                 groupName.style.cssText = `
@@ -820,71 +685,34 @@ class PlateMasterPro {
                 
                 const groupWells = layout.filter(item => item.group === group);
                 const wellCount = groupWells.length;
-                const firstWell = groupWells[0];
+                const wellType = groupWells[0]?.type || 'experimental';
                 
-                groupDetails.innerHTML = `
-                    ${wellCount} wells • ${firstWell ? firstWell.type : 'experimental'}
-                `;
+                groupDetails.innerHTML = `${wellCount} wells • ${wellType}`;
 
                 groupInfo.appendChild(groupName);
                 groupInfo.appendChild(groupDetails);
-
-                // Hover effects
-                legendItem.addEventListener('mouseenter', () => {
-                    legendItem.style.background = '#e2e8f0';
-                    legendItem.style.transform = 'translateX(3px)';
-                    
-                    // Highlight corresponding wells
-                    const wells = svg.querySelectorAll('circle');
-                    wells.forEach(well => {
-                        const wellData = layout.find(w => {
-                            const rect = well.getBoundingClientRect();
-                            return w.group === group;
-                        });
-                        if (wellData && wellData.group === group) {
-                            well.style.transform = 'scale(1.15)';
-                            well.style.filter = 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) brightness(1.1)';
-                        }
-                    });
-                });
-
-                legendItem.addEventListener('mouseleave', () => {
-                    legendItem.style.background = '#f8fafc';
-                    legendItem.style.transform = 'translateX(0)';
-                    
-                    // Reset wells
-                    const wells = svg.querySelectorAll('circle');
-                    wells.forEach(well => {
-                        well.style.transform = 'scale(1)';
-                        well.style.filter = 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))';
-                    });
-                });
-
-                legendItem.appendChild(colorSquare);
-                legendItem.appendChild(groupInfo);
-                legendDiv.appendChild(legendItem);
+                item.appendChild(colorSquare);
+                item.appendChild(groupInfo);
+                legendSection.appendChild(item);
             });
 
-            // Add summary info
-            if (uniqueGroups.length > 0) {
-                const summaryDiv = document.createElement('div');
-                summaryDiv.style.cssText = `
-                    margin-top: 1rem;
-                    padding-top: 1rem;
-                    border-top: 1px solid #e2e8f0;
-                    font-size: 0.8rem;
-                    color: #64748b;
-                `;
-                
-                summaryDiv.innerHTML = `
-                    <div style="margin-bottom: 0.5rem;"><strong>Total Groups:</strong> ${uniqueGroups.length}</div>
-                    <div style="margin-bottom: 0.5rem;"><strong>Wells Used:</strong> ${layout.length}</div>
-                    <div><strong>Utilization:</strong> ${((layout.length / (rows * cols)) * 100).toFixed(1)}%</div>
-                `;
-                legendDiv.appendChild(summaryDiv);
-            }
+            // Add summary information
+            const summaryDiv = document.createElement('div');
+            summaryDiv.style.cssText = `
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e2e8f0;
+                font-size: 0.8rem;
+                color: #64748b;
+            `;
+            
+            summaryDiv.innerHTML = `
+                <div style="margin-bottom: 0.5rem;"><strong>Total Groups:</strong> ${uniqueGroups.length}</div>
+                <div style="margin-bottom: 0.5rem;"><strong>Wells Used:</strong> ${layout.length}</div>
+                <div><strong>Utilization:</strong> ${((layout.length / (this.plateConfigs[document.getElementById('plate-format').value].rows * this.plateConfigs[document.getElementById('plate-format').value].cols)) * 100).toFixed(1)}%</div>
+            `;
+            legendSection.appendChild(summaryDiv);
         } else {
-            // Empty state
             const emptyState = document.createElement('div');
             emptyState.style.cssText = `
                 text-align: center;
@@ -896,98 +724,37 @@ class PlateMasterPro {
                 <i class="fas fa-flask" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
                 <div>Generate a layout to see the legend</div>
             `;
-            legendDiv.appendChild(emptyState);
+            legendSection.appendChild(emptyState);
         }
 
-        // Assemble the complete visualization
-        mainContainer.appendChild(plateDiv);
-        mainContainer.appendChild(legendDiv);
-        plateContainer.appendChild(mainContainer);
+        return legendSection;
     }
 
-    showTooltip(event, wellData, wellName) {
-        const tooltip = document.getElementById('tooltip');
-        
-        if (wellData) {
-            const plateFormat = document.getElementById('plate-format').value;
-            const surfaceArea = this.plateConfigs[plateFormat].surfaceArea;
-            
-            tooltip.innerHTML = `
-                <div class="tooltip-title">Well ${wellName}</div>
-                <div style="margin-top: 0.5rem; line-height: 1.4;">
-                    <strong>Group:</strong> ${wellData.group}<br>
-                    <strong>Time:</strong> ${wellData.timepoint}<br>
-                    <strong>Bio Rep:</strong> ${wellData.bioReplicate} | <strong>Tech Rep:</strong> ${wellData.techReplicate}<br>
-                    <strong>Type:</strong> ${wellData.type}<br>
-                    <strong>Surface:</strong> ${surfaceArea} cm²
-                </div>
-            `;
-        } else {
-            tooltip.innerHTML = `
-                <div class="tooltip-title">Well ${wellName}</div>
-                <div style="margin-top: 0.5rem; color: #94a3b8; font-style: italic;">Empty well</div>
-            `;
-        }
-
-        this.updateTooltipPosition(event);
-        tooltip.classList.add('show');
-    }
-
-    updateTooltipPosition(event) {
-        const tooltip = document.getElementById('tooltip');
-        tooltip.style.left = `${event.pageX + 15}px`;
-        tooltip.style.top = `${event.pageY - 10}px`;
-    }
-
-    hideTooltip() {
-        document.getElementById('tooltip').classList.remove('show');
-    }
-
-    updateLegend() {
-        // Legend is now handled within drawPlateStructure
-        // This method is kept for compatibility
-    }
-
-    updateQuickStats() {
-        const groups = this.getTags('groups-container');
-        const timepoints = this.getTags('timepoints-container');
-        const bioReps = parseInt(document.getElementById('bio-replicates').value) || 0;
-        const techReps = parseInt(document.getElementById('tech-replicates').value) || 0;
-        const plateFormat = document.getElementById('plate-format').value;
-        const config = this.plateConfigs[plateFormat];
-
-        const experimentalWells = groups.length * timepoints.length * bioReps * techReps;
-        const controlWells = document.getElementById('include-controls')?.checked ? 
-            timepoints.length * bioReps * techReps * 2 : 0;
-        const blankWells = document.getElementById('include-blanks')?.checked ? 
-            timepoints.length * techReps : 0;
-        
-        const totalNeeded = experimentalWells + controlWells + blankWells;
-        const available = config.rows * config.cols;
-        const utilization = available > 0 ? (totalNeeded / available * 100).toFixed(1) : 0;
-        const totalSurfaceArea = (totalNeeded * config.surfaceArea).toFixed(2);
-
-        document.getElementById('wells-needed').textContent = totalNeeded;
-        document.getElementById('wells-available').textContent = available;
-        document.getElementById('utilization').textContent = `${utilization}%`;
-        document.getElementById('surface-area').textContent = totalSurfaceArea;
-    }
-
-    // Calculator Functions
+    // **ENHANCED SCIENTIFIC CALCULATOR**
     calculateDilution() {
-        const stockConc = parseFloat(document.getElementById('stock-conc').value);
+        const stockConcInput = document.getElementById('stock-conc').value;
         const stockUnit = document.getElementById('stock-unit').value;
-        const targetConc = parseFloat(document.getElementById('target-conc').value);
+        const targetConcInput = document.getElementById('target-conc').value;
         const targetUnit = document.getElementById('target-unit').value;
-        const finalVol = parseFloat(document.getElementById('final-volume').value);
+        const finalVolInput = document.getElementById('final-volume').value;
         const volUnit = document.getElementById('volume-unit').value;
 
-        if (isNaN(stockConc) || isNaN(targetConc) || isNaN(finalVol) || stockConc <= 0 || targetConc <= 0 || finalVol <= 0) {
-            this.showNotification('error', 'Input Error', 'Please enter valid positive numbers for all fields');
+        // Parse scientific notation inputs
+        const stockConc = this.parseScientificInput(stockConcInput);
+        const targetConc = this.parseScientificInput(targetConcInput);
+        const finalVol = this.parseScientificInput(finalVolInput);
+
+        if (isNaN(stockConc) || isNaN(targetConc) || isNaN(finalVol)) {
+            this.showNotification('error', 'Invalid Input', 'Please enter valid numbers (supports scientific notation like 3×10⁶)');
             return;
         }
 
-        // Convert concentrations to a common unit (µM for molar, µg/mL for mass)
+        if (stockConc <= 0 || targetConc <= 0 || finalVol <= 0) {
+            this.showNotification('error', 'Invalid Values', 'All values must be positive');
+            return;
+        }
+
+        // Convert to common units
         const stockConcBase = this.convertConcentrationToBase(stockConc, stockUnit);
         const targetConcBase = this.convertConcentrationToBase(targetConc, targetUnit);
         const finalVolBase = this.convertVolumeToMicroliters(finalVol, volUnit);
@@ -1002,13 +769,13 @@ class PlateMasterPro {
         const volDiluent = finalVolBase - volStock;
         const dilutionFactor = stockConcBase / targetConcBase;
 
-        // Generate batch preparation table
-        const batchSizes = [1, 5, 10, 25, 50];
+        // Generate multiple batch sizes
+        const batchSizes = [1, 2, 5, 10, 25, 50];
         const batches = batchSizes.map(multiplier => ({
             size: multiplier,
-            stockVol: (volStock * multiplier).toFixed(2),
-            diluentVol: (volDiluent * multiplier).toFixed(2),
-            totalVol: (finalVolBase * multiplier).toFixed(2)
+            stockVol: (volStock * multiplier).toFixed(3),
+            diluentVol: (volDiluent * multiplier).toFixed(3),
+            totalVol: (finalVolBase * multiplier).toFixed(3)
         }));
 
         const resultDiv = document.getElementById('dilution-result');
@@ -1017,15 +784,15 @@ class PlateMasterPro {
             <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin: 10px 0;">
                 <p><strong>Stock volume needed:</strong> ${volStock.toFixed(3)} µL</p>
                 <p><strong>Diluent volume:</strong> ${volDiluent.toFixed(3)} µL</p>
-                <p><strong>Final volume:</strong> ${finalVolBase} µL</p>
-                <p><strong>Dilution factor:</strong> ${dilutionFactor.toFixed(2)}×</p>
+                <p><strong>Final volume:</strong> ${finalVolBase.toFixed(1)} µL</p>
+                <p><strong>Dilution factor:</strong> ${dilutionFactor.toExponential(2)}</p>
             </div>
             
             <div style="margin-top: 15px;">
                 <h5><i class="fas fa-table"></i> Batch Preparation Guide</h5>
-                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem;">
                     <tr style="background: #f1f5f9;">
-                        <th style="padding: 8px; border: 1px solid #ddd;">Batch Size</th>
+                        <th style="padding: 8px; border: 1px solid #ddd;">Batch</th>
                         <th style="padding: 8px; border: 1px solid #ddd;">Stock (µL)</th>
                         <th style="padding: 8px; border: 1px solid #ddd;">Diluent (µL)</th>
                         <th style="padding: 8px; border: 1px solid #ddd;">Total (µL)</th>
@@ -1044,48 +811,20 @@ class PlateMasterPro {
         resultDiv.classList.add('show');
     }
 
-    convertConcentrationToBase(value, unit) {
-        // Convert to µM for molar units, µg/mL for mass units, CFU/mL for biological units
-        const molarConversions = {
-            'M': 1e6, 'mM': 1e3, 'µM': 1, 'nM': 1e-3, 'pM': 1e-6
-        };
-        
-        const massConversions = {
-            'g/L': 1e3, 'mg/mL': 1, 'µg/mL': 1, 'ng/mL': 1e-3, 'pg/mL': 1e-6
-        };
-        
-        const biologicalConversions = {
-            'CFU/mL': 1, 'CFU/µL': 1e3, 'cells/mL': 1, 'cells/µL': 1e3, 'IU/mL': 1, 'U/mL': 1
-        };
-
-        if (molarConversions[unit]) return value * molarConversions[unit];
-        if (massConversions[unit]) return value * massConversions[unit];
-        if (biologicalConversions[unit]) return value * biologicalConversions[unit];
-        
-        // Handle percentage units
-        if (unit.includes('%')) return value * 1e4;
-        
-        return value; // Default if unit not found
-    }
-
-    convertVolumeToMicroliters(value, unit) {
-        const conversions = {
-            'L': 1e6, 'mL': 1e3, 'µL': 1
-        };
-        return value * (conversions[unit] || 1e3); // Default to mL if unit not found
-    }
-
-    calculateCFUDistribution() {
-        const stockCFU = parseFloat(document.getElementById('cfu-stock').value);
+    calculateCFU() {
+        const stockCFUInput = document.getElementById('cfu-stock').value;
         const stockUnit = document.getElementById('cfu-stock-unit').value;
-        const targetCFU = parseFloat(document.getElementById('target-cfu').value);
+        const targetCFUInput = document.getElementById('target-cfu').value;
         const targetUnit = document.getElementById('target-cfu-unit').value;
         const wellVolume = parseFloat(document.getElementById('well-volume').value);
         const wellCount = parseInt(document.getElementById('well-count').value);
-        const plateFormat = document.getElementById('plate-format').value;
+
+        // Parse scientific notation
+        const stockCFU = this.parseScientificInput(stockCFUInput);
+        const targetCFU = this.parseScientificInput(targetCFUInput);
 
         if (isNaN(stockCFU) || isNaN(targetCFU) || isNaN(wellVolume) || isNaN(wellCount)) {
-            this.showNotification('error', 'Input Error', 'Please enter valid numbers for all CFU fields');
+            this.showNotification('error', 'Invalid Input', 'Please enter valid numbers for all CFU fields');
             return;
         }
 
@@ -1095,12 +834,13 @@ class PlateMasterPro {
 
         if (stockUnit === 'CFU/µL') stockCFUBase *= 1000;
         if (targetUnit === 'CFU/µL') targetCFUBase *= 1000;
-        if (targetUnit === 'CFU/cm²') {
-            const surfaceArea = this.plateConfigs[plateFormat].surfaceArea;
-            targetCFUBase = targetCFU * surfaceArea * (wellVolume / 1000); // Convert to CFU/mL
-        }
         if (targetUnit === 'CFU/well') {
             targetCFUBase = targetCFU / (wellVolume / 1000); // Convert to CFU/mL
+        }
+        if (targetUnit === 'CFU/cm²') {
+            const plateFormat = document.getElementById('plate-format').value;
+            const surfaceArea = this.plateConfigs[plateFormat].surfaceArea;
+            targetCFUBase = targetCFU * surfaceArea * (wellVolume / 1000); // Convert to CFU/mL
         }
 
         if (stockCFUBase <= targetCFUBase) {
@@ -1114,10 +854,10 @@ class PlateMasterPro {
         const diluentVolume = totalVolume - volumeStock;
 
         // Surface area calculations
+        const plateFormat = document.getElementById('plate-format').value;
         const surfaceArea = this.plateConfigs[plateFormat].surfaceArea;
         const cfuPerCm2 = targetCFUBase * (wellVolume / 1000) / surfaceArea;
         const totalSurfaceArea = surfaceArea * wellCount;
-        const totalCFUNeeded = targetCFUBase * (totalVolume / 1000);
 
         const resultDiv = document.getElementById('cfu-result');
         resultDiv.innerHTML = `
@@ -1134,25 +874,40 @@ class PlateMasterPro {
                 <p><strong>CFU per cm²:</strong> ${cfuPerCm2.toExponential(2)}</p>
                 <p><strong>Total surface area:</strong> ${totalSurfaceArea.toFixed(2)} cm²</p>
                 <p><strong>Well surface area:</strong> ${surfaceArea} cm²</p>
-                <p><strong>Total CFU needed:</strong> ${totalCFUNeeded.toExponential(2)}</p>
-            </div>
-
-            <div style="background: #fefce8; padding: 10px; border-radius: 6px; margin: 10px 0;">
-                <h5><i class="fas fa-exclamation-triangle"></i> Protocol Notes</h5>
-                <ul style="margin: 5px 0; padding-left: 20px; font-size: 0.9em;">
-                    <li>Use sterile technique throughout preparation</li>
-                    <li>Prepare bacterial dilution fresh before use</li>
-                    <li>Mix gently to avoid cell damage</li>
-                    <li>Consider bacterial adhesion properties for surface studies</li>
-                    <li>Validate CFU counts with serial dilution plating</li>
-                </ul>
             </div>
         `;
         resultDiv.classList.add('show');
     }
 
+    convertConcentrationToBase(value, unit) {
+        const molarConversions = {
+            'M': 1e6, 'mM': 1e3, 'µM': 1, 'nM': 1e-3, 'pM': 1e-6
+        };
+        
+        const massConversions = {
+            'g/L': 1e3, 'mg/mL': 1, 'µg/mL': 1, 'ng/mL': 1e-3, 'pg/mL': 1e-6
+        };
+        
+        const biologicalConversions = {
+            'CFU/mL': 1, 'CFU/µL': 1e3, 'cells/mL': 1, 'cells/µL': 1e3, 'IU/mL': 1, 'U/mL': 1
+        };
+
+        if (molarConversions[unit]) return value * molarConversions[unit];
+        if (massConversions[unit]) return value * massConversions[unit];
+        if (biologicalConversions[unit]) return value * biologicalConversions[unit];
+        
+        return value; // Default if unit not found
+    }
+
+    convertVolumeToMicroliters(value, unit) {
+        const conversions = {
+            'L': 1e6, 'mL': 1e3, 'µL': 1
+        };
+        return value * (conversions[unit] || 1e3); // Default to mL
+    }
+
     convertUnits() {
-        const value = parseFloat(document.getElementById('convert-from-value').value);
+        const value = this.parseScientificInput(document.getElementById('convert-from').value);
         const fromUnit = document.getElementById('convert-from-unit').value;
         const toUnit = document.getElementById('convert-to-unit').value;
 
@@ -1163,311 +918,156 @@ class PlateMasterPro {
 
         let result = value;
 
-        // Volume conversions
-        const volumeConversions = {
+        // Enhanced conversion factors
+        const conversions = {
+            // Volume
             'L_mL': 1000, 'mL_L': 0.001, 'mL_µL': 1000, 'µL_mL': 0.001,
-            'µL_nL': 1000, 'nL_µL': 0.001, 'nL_pL': 1000, 'pL_nL': 0.001
-        };
-
-        // Mass conversions
-        const massConversions = {
+            'µL_nL': 1000, 'nL_µL': 0.001, 'nL_pL': 1000, 'pL_nL': 0.001,
+            
+            // Mass
             'kg_g': 1000, 'g_kg': 0.001, 'g_mg': 1000, 'mg_g': 0.001,
             'mg_µg': 1000, 'µg_mg': 0.001, 'µg_ng': 1000, 'ng_µg': 0.001,
-            'ng_pg': 1000, 'pg_ng': 0.001
-        };
-
-        // Molar conversions
-        const molarConversions = {
+            'ng_pg': 1000, 'pg_ng': 0.001,
+            
+            // Molar
             'mol_mmol': 1000, 'mmol_mol': 0.001, 'mmol_µmol': 1000, 'µmol_mmol': 0.001,
             'µmol_nmol': 1000, 'nmol_µmol': 0.001, 'nmol_pmol': 1000, 'pmol_nmol': 0.001
         };
 
         const conversionKey = `${fromUnit}_${toUnit}`;
-        const allConversions = { ...volumeConversions, ...massConversions, ...molarConversions };
 
         if (fromUnit === toUnit) {
             result = value;
-        } else if (allConversions[conversionKey]) {
-            result = value * allConversions[conversionKey];
+        } else if (conversions[conversionKey]) {
+            result = value * conversions[conversionKey];
         } else {
             this.showNotification('error', 'Conversion Error', `Cannot convert from ${fromUnit} to ${toUnit}`);
             return;
         }
 
-        document.getElementById('convert-result').value = result.toPrecision(6);
+        document.getElementById('convert-result').value = this.formatScientificResult(result);
     }
 
     convertUnitsRealTime() {
-        const value = document.getElementById('convert-from-value').value;
-        if (value && !isNaN(parseFloat(value))) {
+        const value = document.getElementById('convert-from').value;
+        if (value && !isNaN(this.parseScientificInput(value))) {
             this.convertUnits();
         } else {
             document.getElementById('convert-result').value = '';
         }
     }
 
-    calculateStatisticalPower() {
-        const effectSize = parseFloat(document.getElementById('effect-size').value);
-        const alpha = parseFloat(document.getElementById('alpha-level').value);
-        const power = parseFloat(document.getElementById('power-level').value);
-        const groups = parseInt(document.getElementById('group-count').value);
-
-        if (isNaN(effectSize) || isNaN(alpha) || isNaN(power) || isNaN(groups)) {
-            this.showNotification('error', 'Input Error', 'Please fill all power analysis fields');
-            return;
-        }
-
-        // Simplified power analysis for two-sample t-test
-        const zAlpha = this.getZScore(1 - alpha / 2);
-        const zBeta = this.getZScore(power);
-        const nPerGroup = Math.ceil((2 * Math.pow(zAlpha + zBeta, 2)) / Math.pow(effectSize, 2));
-        const totalSample = nPerGroup * groups;
-
-        // Additional scenarios
-        const scenarios = [
-            { alpha: 0.05, power: 0.8 },
-            { alpha: 0.05, power: 0.9 },
-            { alpha: 0.01, power: 0.8 },
-            { alpha: 0.01, power: 0.9 }
-        ].map(scenario => {
-            const zA = this.getZScore(1 - scenario.alpha / 2);
-            const zB = this.getZScore(scenario.power);
-            const n = Math.ceil((2 * Math.pow(zA + zB, 2)) / Math.pow(effectSize, 2));
-            return {
-                alpha: scenario.alpha,
-                power: scenario.power,
-                nPerGroup: n,
-                total: n * groups
-            };
-        });
-
-        const resultDiv = document.getElementById('power-result');
-        resultDiv.innerHTML = `
-            <h4><i class="fas fa-chart-area"></i> Statistical Power Analysis</h4>
-            <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 10px 0;">
-                <p><strong>Recommended sample size per group:</strong> ${nPerGroup}</p>
-                <p><strong>Total sample size needed:</strong> ${totalSample}</p>
-                <p><strong>Effect size (Cohen's d):</strong> ${effectSize}</p>
-                <p><strong>Alpha level (α):</strong> ${alpha}</p>
-                <p><strong>Statistical power (1-β):</strong> ${power}</p>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <h5><i class="fas fa-table"></i> Alternative Scenarios</h5>
-                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                    <tr style="background: #f1f5f9;">
-                        <th style="padding: 8px; border: 1px solid #ddd;">Alpha</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">Power</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">Per Group</th>
-                        <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
-                    </tr>
-                    ${scenarios.map(s => `
-                        <tr>
-                            <td style="padding: 8px; border: 1px solid #ddd;">${s.alpha}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">${s.power}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">${s.nPerGroup}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">${s.total}</td>
-                        </tr>
-                    `).join('')}
-                </table>
-            </div>
-        `;
-        resultDiv.classList.add('show');
-    }
-
-    getZScore(probability) {
-        // Approximate inverse normal CDF for common probabilities
-        const zScores = {
-            0.5: 0, 0.8: 0.842, 0.9: 1.282, 0.95: 1.645,
-            0.975: 1.96, 0.99: 2.326, 0.995: 2.576
-        };
-        return zScores[probability] || 1.96; // Default to 95% confidence
-    }
-
-    loadTemplateCards() {
-        const container = document.getElementById('template-cards');
-        if (!container) return;
-
-        container.innerHTML = '';
-        
-        Object.entries(this.assayTemplates).forEach(([key, template]) => {
-            const card = document.createElement('div');
-            card.className = 'template-card';
-            card.innerHTML = `
-                <h4>${template.name}</h4>
-                <p>${template.description}</p>
-                <div class="template-meta">
-                    <span>${template.groups.length} groups</span>
-                    <span>${template.plateFormat}-well</span>
-                </div>
-            `;
-            card.addEventListener('click', () => this.loadAssayTemplate(key));
-            container.appendChild(card);
-        });
-    }
-
-    loadAssayTemplate(templateKey) {
-        const template = this.assayTemplates[templateKey];
-        if (!template) return;
-
-        // Set basic parameters
-        document.getElementById('exp-name').value = template.name;
-        document.getElementById('plate-format').value = template.plateFormat;
-        document.getElementById('bio-replicates').value = template.bioReplicates;
-        document.getElementById('tech-replicates').value = template.techReplicates;
-        document.getElementById('include-controls').checked = template.controls;
-        document.getElementById('include-blanks').checked = template.blanks;
-
-        // Clear and set groups
-        this.clearTags('groups-container');
-        template.groups.forEach(group => {
-            this.addTag(document.getElementById('groups-container'), group);
-        });
-
-        // Clear and set timepoints
-        this.clearTags('timepoints-container');
-        template.timepoints.forEach(timepoint => {
-            this.addTag(document.getElementById('timepoints-container'), timepoint);
-        });
-
-        this.updateQuickStats();
-        this.showNotification('success', 'Template Loaded', `${template.name} template applied successfully`);
-    }
-
-    clearTags(containerId) {
-        const container = document.getElementById(containerId);
-        const tags = container.querySelectorAll('.tag');
-        tags.forEach(tag => tag.remove());
-    }
-
-    saveCurrentTemplate() {
-        const templateName = document.getElementById('template-name').value.trim();
-        if (!templateName) {
-            this.showNotification('warning', 'Template Name Required', 'Please enter a name for your template');
-            return;
-        }
-
-        const template = {
-            name: templateName,
-            expName: document.getElementById('exp-name').value,
-            plateFormat: document.getElementById('plate-format').value,
-            groups: this.getTags('groups-container'),
-            timepoints: this.getTags('timepoints-container'),
-            bioReplicates: parseInt(document.getElementById('bio-replicates').value),
-            techReplicates: parseInt(document.getElementById('tech-replicates').value),
-            controls: document.getElementById('include-controls').checked,
-            blanks: document.getElementById('include-blanks').checked,
-            created: new Date().toISOString()
-        };
-
-        const savedTemplates = JSON.parse(localStorage.getItem('plateMasterTemplates') || '{}');
-        savedTemplates[templateName] = template;
-        localStorage.setItem('plateMasterTemplates', JSON.stringify(savedTemplates));
-
-        document.getElementById('template-name').value = '';
-        this.loadSavedTemplates();
-        this.showNotification('success', 'Template Saved', `Template "${templateName}" saved successfully`);
-    }
-
-    loadSavedTemplates() {
-        const container = document.getElementById('saved-templates');
-        if (!container) return;
-
-        const savedTemplates = JSON.parse(localStorage.getItem('plateMasterTemplates') || '{}');
-        container.innerHTML = '';
-
-        Object.entries(savedTemplates).forEach(([name, template]) => {
-            const item = document.createElement('div');
-            item.className = 'template-item';
-            item.innerHTML = `
-                <div>
-                    <div class="template-item-name">${name}</div>
-                    <div class="template-item-date">${new Date(template.created).toLocaleDateString()}</div>
-                </div>
-                <div class="template-actions">
-                    <button class="btn btn-primary" onclick="app.loadSavedTemplate('${name}')">Load</button>
-                    <button class="btn btn-danger" onclick="app.deleteSavedTemplate('${name}')">Delete</button>
-                </div>
-            `;
-            container.appendChild(item);
-        });
-    }
-
-    loadSavedTemplate(templateName) {
-        const savedTemplates = JSON.parse(localStorage.getItem('plateMasterTemplates') || '{}');
-        const template = savedTemplates[templateName];
-        if (!template) return;
-
-        // Load template data
-        document.getElementById('exp-name').value = template.expName || '';
-        document.getElementById('plate-format').value = template.plateFormat || '96';
-        document.getElementById('bio-replicates').value = template.bioReplicates || 3;
-        document.getElementById('tech-replicates').value = template.techReplicates || 3;
-        document.getElementById('include-controls').checked = template.controls !== false;
-        document.getElementById('include-blanks').checked = template.blanks !== false;
-
-        // Load groups and timepoints
-        this.clearTags('groups-container');
-        this.clearTags('timepoints-container');
-
-        template.groups.forEach(group => {
-            this.addTag(document.getElementById('groups-container'), group);
-        });
-
-        template.timepoints.forEach(timepoint => {
-            this.addTag(document.getElementById('timepoints-container'), timepoint);
-        });
-
-        this.updateQuickStats();
-        this.showNotification('success', 'Template Loaded', `Template "${templateName}" loaded successfully`);
-    }
-
-    deleteSavedTemplate(templateName) {
-        if (!confirm(`Are you sure you want to delete template "${templateName}"?`)) return;
-
-        const savedTemplates = JSON.parse(localStorage.getItem('plateMasterTemplates') || '{}');
-        delete savedTemplates[templateName];
-        localStorage.setItem('plateMasterTemplates', JSON.stringify(savedTemplates));
-
-        this.loadSavedTemplates();
-        this.showNotification('success', 'Template Deleted', `Template "${templateName}" deleted successfully`);
-    }
-
-    zoomPlate(factor) {
-        this.zoomLevel *= factor;
-        this.zoomLevel = Math.max(0.5, Math.min(3, this.zoomLevel)); // Limit zoom range
-        
-        const svg = document.querySelector('#plate-container svg');
-        if (svg) {
-            svg.style.transform = `scale(${this.zoomLevel})`;
+    formatScientificResult(number) {
+        if (Math.abs(number) >= 1e6 || (Math.abs(number) < 1e-3 && number !== 0)) {
+            return number.toExponential(3);
+        } else {
+            return number.toPrecision(6);
         }
     }
 
-    exportPlate(format) {
+    // **ENHANCED PNG EXPORT WITH PROPER LABELING**
+    async exportPlate(format) {
         if (this.currentLayout.length === 0) {
             this.showNotification('warning', 'No Layout', 'Please generate a plate layout first');
             return;
         }
 
-        switch (format) {
-            case 'png':
-                this.exportAsPNG();
-                break;
-            case 'svg':
-                this.exportAsSVG();
-                break;
-            case 'csv':
-                this.exportAsCSV();
-                break;
-            case 'protocol':
-                this.exportAsProtocol();
-                break;
+        this.showLoading('Exporting...');
+
+        try {
+            switch (format) {
+                case 'png':
+                    await this.exportAsPNG();
+                    break;
+                case 'svg':
+                    this.exportAsSVG();
+                    break;
+                case 'csv':
+                    this.exportAsCSV();
+                    break;
+                case 'protocol':
+                    this.exportAsProtocol();
+                    break;
+            }
+        } catch (error) {
+            this.showNotification('error', 'Export Failed', error.message);
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    async exportAsPNG() {
+        // Create a high-resolution version of the plate for export
+        const exportContainer = document.createElement('div');
+        exportContainer.style.cssText = `
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            background: white;
+            padding: 40px;
+            font-family: 'Inter', sans-serif;
+        `;
+
+        // Clone and enhance the current plate visualization
+        const plateClone = document.getElementById('plate-container').cloneNode(true);
+        plateClone.style.transform = 'scale(2)'; // Higher resolution
+        plateClone.style.transformOrigin = 'top left';
+
+        // Add header information
+        const header = document.createElement('div');
+        header.style.cssText = `
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        `;
+        
+        const expName = document.getElementById('exp-name').value || 'Untitled Experiment';
+        const researcher = document.getElementById('researcher-name').value || 'Unknown Researcher';
+        const date = new Date().toLocaleDateString();
+        
+        header.innerHTML = `
+            <h1 style="font-size: 24px; font-weight: 700; color: #1e293b; margin-bottom: 10px;">${expName}</h1>
+            <p style="font-size: 16px; color: #475569;">Researcher: ${researcher}</p>
+            <p style="font-size: 14px; color: #64748b;">Generated: ${date} | PlateMaster Pro</p>
+        `;
+
+        exportContainer.appendChild(header);
+        exportContainer.appendChild(plateClone);
+        document.body.appendChild(exportContainer);
+
+        try {
+            // Use html2canvas if available, otherwise provide fallback
+            if (typeof html2canvas !== 'undefined') {
+                const canvas = await html2canvas(exportContainer, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: false
+                });
+                
+                // Download the image
+                const link = document.createElement('a');
+                link.download = `${expName.replace(/[^a-z0-9]/gi, '_')}_plate_layout.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                this.showNotification('success', 'Export Complete', 'High-quality PNG downloaded successfully');
+            } else {
+                // Fallback: Show instructions for manual screenshot
+                this.showNotification('info', 'Screenshot Tip', 'Take a screenshot of the plate for high-quality export');
+            }
+        } finally {
+            document.body.removeChild(exportContainer);
         }
     }
 
     exportAsSVG() {
         const svg = document.querySelector('#plate-container svg');
-        if (!svg) return;
+        if (!svg) {
+            this.showNotification('error', 'Export Error', 'No SVG visualization found');
+            return;
+        }
 
         const serializer = new XMLSerializer();
         const source = serializer.serializeToString(svg);
@@ -1476,45 +1076,13 @@ class PlateMasterPro {
         const url = URL.createObjectURL(blob);
 
         const link = document.createElement('a');
-        link.download = `${document.getElementById('exp-name').value || 'plate-layout'}.svg`;
+        const expName = document.getElementById('exp-name').value || 'plate-layout';
+        link.download = `${expName.replace(/[^a-z0-9]/gi, '_')}.svg`;
         link.href = url;
         link.click();
 
         URL.revokeObjectURL(url);
         this.showNotification('success', 'Export Complete', 'SVG file downloaded successfully');
-    }
-
-    exportAsPNG() {
-        const svg = document.querySelector('#plate-container svg');
-        if (!svg) return;
-
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        const serializer = new XMLSerializer();
-        const source = serializer.serializeToString(svg);
-
-        const img = new Image();
-        const url = URL.createObjectURL(new Blob([source], { type: 'image/svg+xml;charset=utf-8' }));
-
-        img.onload = () => {
-            canvas.width = img.width * 2; // High resolution
-            canvas.height = img.height * 2;
-            ctx.scale(2, 2);
-            ctx.drawImage(img, 0, 0);
-
-            canvas.toBlob(blob => {
-                const link = document.createElement('a');
-                link.download = `${document.getElementById('exp-name').value || 'plate-layout'}.png`;
-                link.href = URL.createObjectURL(blob);
-                link.click();
-                URL.revokeObjectURL(link.href);
-            });
-
-            URL.revokeObjectURL(url);
-            this.showNotification('success', 'Export Complete', 'PNG file downloaded successfully');
-        };
-
-        img.src = url;
     }
 
     exportAsCSV() {
@@ -1528,41 +1096,50 @@ class PlateMasterPro {
         const url = URL.createObjectURL(blob);
 
         const link = document.createElement('a');
-        link.download = `${document.getElementById('exp-name').value || 'plate-layout'}.csv`;
+        const expName = document.getElementById('exp-name').value || 'plate-layout';
+        link.download = `${expName.replace(/[^a-z0-9]/gi, '_')}_data.csv`;
         link.href = url;
         link.click();
 
         URL.revokeObjectURL(url);
-        this.showNotification('success', 'Export Complete', 'CSV file downloaded successfully');
+        this.showNotification('success', 'Export Complete', 'CSV data file downloaded successfully');
     }
 
     exportAsProtocol() {
         const expName = document.getElementById('exp-name').value || 'Untitled Experiment';
+        const researcher = document.getElementById('researcher-name').value || 'Unknown Researcher';
         const plateFormat = document.getElementById('plate-format').value;
         const groups = [...new Set(this.currentLayout.map(item => item.group))];
         
         let protocol = `EXPERIMENTAL PROTOCOL\n`;
-        protocol += `===================\n\n`;
+        protocol += `====================\n\n`;
         protocol += `Experiment: ${expName}\n`;
+        protocol += `Researcher: ${researcher}\n`;
         protocol += `Date: ${new Date().toLocaleDateString()}\n`;
         protocol += `Plate Format: ${plateFormat}-well\n`;
-        protocol += `Total Wells Used: ${this.currentLayout.length}\n\n`;
+        protocol += `Wells Used: ${this.currentLayout.length}\n\n`;
         
-        protocol += `GROUPS:\n`;
-        groups.forEach(group => {
-            protocol += `- ${group}\n`;
+        protocol += `EXPERIMENTAL GROUPS:\n`;
+        protocol += `===================\n`;
+        groups.forEach((group, index) => {
+            const groupWells = this.currentLayout.filter(item => item.group === group);
+            protocol += `${index + 1}. ${group} (${groupWells.length} wells)\n`;
         });
         
-        protocol += `\nWELL LAYOUT:\n`;
+        protocol += `\nWELL ASSIGNMENTS:\n`;
+        protocol += `================\n`;
         this.currentLayout.forEach(item => {
-            protocol += `${item.well}: ${item.group} (${item.timepoint}, Bio${item.bioReplicate}, Tech${item.techReplicate})\n`;
+            protocol += `${item.well}: ${item.group} | ${item.timepoint} | Bio${item.bioReplicate} | Tech${item.techReplicate}\n`;
         });
+
+        protocol += `\nGENERATED BY: PlateMaster Pro\n`;
+        protocol += `TIMESTAMP: ${new Date().toISOString()}\n`;
 
         const blob = new Blob([protocol], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
 
         const link = document.createElement('a');
-        link.download = `${expName}_protocol.txt`;
+        link.download = `${expName.replace(/[^a-z0-9]/gi, '_')}_protocol.txt`;
         link.href = url;
         link.click();
 
@@ -1570,18 +1147,73 @@ class PlateMasterPro {
         this.showNotification('success', 'Export Complete', 'Protocol file downloaded successfully');
     }
 
-    updateStats() {
-        // Update experiment counter
-        let count = parseInt(localStorage.getItem('plateMasterExperiments') || '0');
-        count++;
-        localStorage.setItem('plateMasterExperiments', count.toString());
-        document.getElementById('experiments-count').textContent = count;
+    // Utility methods
+    updatePlateParameters() {
+        const plateFormat = document.getElementById('plate-format').value;
+        const config = this.plateConfigs[plateFormat];
+        
+        if (document.getElementById('well-surface-area')) {
+            document.getElementById('well-surface-area').value = config.surfaceArea;
+        }
+        if (document.getElementById('well-max-volume')) {
+            document.getElementById('well-max-volume').value = config.maxVolume;
+        }
+        if (document.getElementById('well-working-volume')) {
+            document.getElementById('well-working-volume').value = config.workingVolume;
+        }
+        
+        this.updateQuickStats();
+        this.drawEmptyPlate();
+    }
 
-        // Update wells counter
-        let totalWells = parseInt(localStorage.getItem('plateMasterWells') || '0');
-        totalWells += this.currentLayout.length;
-        localStorage.setItem('plateMasterWells', totalWells.toString());
-        document.getElementById('wells-count').textContent = totalWells;
+    resetPlateDefaults() {
+        this.updatePlateParameters();
+        this.showNotification('info', 'Reset Complete', 'Plate parameters reset to defaults');
+    }
+
+    updateQuickStats() {
+        const groups = this.getTags('groups-container');
+        const timepoints = this.getTags('timepoints-container');
+        const bioReps = parseInt(document.getElementById('bio-replicates').value) || 0;
+        const techReps = parseInt(document.getElementById('tech-replicates').value) || 0;
+        const plateFormat = document.getElementById('plate-format').value;
+        const config = this.plateConfigs[plateFormat];
+
+        const wellsNeeded = groups.length * timepoints.length * bioReps * techReps;
+        const wellsAvailable = config.rows * config.cols;
+        const utilization = wellsAvailable > 0 ? (wellsNeeded / wellsAvailable * 100).toFixed(1) : 0;
+        const totalSurface = (wellsNeeded * config.surfaceArea).toFixed(2);
+
+        document.getElementById('wells-needed').textContent = wellsNeeded;
+        document.getElementById('wells-available').textContent = wellsAvailable;
+        document.getElementById('utilization').textContent = `${utilization}%`;
+        document.getElementById('total-surface').textContent = totalSurface;
+    }
+
+    updatePlateTitle() {
+        const expName = document.getElementById('exp-name').value || 'Plate Layout';
+        document.getElementById('plate-title').textContent = expName;
+    }
+
+    adjustZoom(factor) {
+        this.zoomLevel *= factor;
+        this.zoomLevel = Math.max(0.5, Math.min(3, this.zoomLevel));
+        
+        const container = document.getElementById('plate-container');
+        container.style.transform = `scale(${this.zoomLevel})`;
+        container.style.transformOrigin = 'center center';
+    }
+
+    toggleFullscreen() {
+        const container = document.getElementById('plate-container');
+        
+        if (!document.fullscreenElement) {
+            container.requestFullscreen().catch(err => {
+                this.showNotification('error', 'Fullscreen Error', 'Could not enter fullscreen mode');
+            });
+        } else {
+            document.exitFullscreen();
+        }
     }
 
     darkenColor(color, percent) {
@@ -1629,34 +1261,61 @@ class PlateMasterPro {
         }, 5000);
     }
 
+    showLoading(message = 'Processing...') {
+        const loading = document.getElementById('loading');
+        loading.querySelector('p').textContent = message;
+        loading.style.display = 'flex';
+    }
+
+    hideLoading() {
+        document.getElementById('loading').style.display = 'none';
+    }
+
+    loadDefaults() {
+        // Load saved settings or use defaults
+        document.getElementById('plate-format').value = '96';
+        document.getElementById('bio-replicates').value = this.settings.defaultBioReps || 3;
+        document.getElementById('tech-replicates').value = this.settings.defaultTechReps || 3;
+        
+        if (this.settings.defaultResearcher) {
+            document.getElementById('researcher-name').value = this.settings.defaultResearcher;
+        }
+    }
+
     loadSettings() {
         try {
             const settings = JSON.parse(localStorage.getItem('plateMasterSettings') || '{}');
             return {
-                labName: settings.labName || '',
-                researcher: settings.researcher || '',
-                defaultReplicates: settings.defaultReplicates || 3,
                 colorScheme: settings.colorScheme || 'default',
-                showWellLabels: settings.showWellLabels !== false
+                showTimepoints: settings.showTimepoints || false,
+                showReplicates: settings.showReplicates || false,
+                defaultBioReps: settings.defaultBioReps || 3,
+                defaultTechReps: settings.defaultTechReps || 3,
+                defaultResearcher: settings.defaultResearcher || '',
+                exportQuality: settings.exportQuality || 'high'
             };
         } catch {
             return {
-                labName: '',
-                researcher: '',
-                defaultReplicates: 3,
                 colorScheme: 'default',
-                showWellLabels: true
+                showTimepoints: false,
+                showReplicates: false,
+                defaultBioReps: 3,
+                defaultTechReps: 3,
+                defaultResearcher: '',
+                exportQuality: 'high'
             };
         }
     }
 
     saveSettings() {
         const settings = {
-            labName: document.getElementById('lab-name')?.value || '',
-            researcher: document.getElementById('researcher-name')?.value || '',
-            defaultReplicates: parseInt(document.getElementById('default-replicates')?.value) || 3,
             colorScheme: document.getElementById('color-scheme')?.value || 'default',
-            showWellLabels: document.getElementById('show-well-labels')?.checked !== false
+            showTimepoints: document.getElementById('show-timepoints')?.checked || false,
+            showReplicates: document.getElementById('show-replicates')?.checked || false,
+            defaultBioReps: parseInt(document.getElementById('default-bio-reps')?.value) || 3,
+            defaultTechReps: parseInt(document.getElementById('default-tech-reps')?.value) || 3,
+            defaultResearcher: document.getElementById('default-researcher')?.value || '',
+            exportQuality: document.getElementById('export-quality')?.value || 'high'
         };
 
         localStorage.setItem('plateMasterSettings', JSON.stringify(settings));
@@ -1701,9 +1360,10 @@ window.exportPlate = function(format) {
     app.exportPlate(format);
 };
 
-// Load saved templates on page load
-document.addEventListener('DOMContentLoaded', () => {
-    app.loadSavedTemplates();
-});
+// Load external libraries for enhanced PNG export
+const script = document.createElement('script');
+script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+script.async = true;
+document.head.appendChild(script);
 
-console.log('PlateMaster Pro initialized successfully with improved visualization!');
+console.log('🧪 PlateMaster Pro loaded successfully with enhanced features!');
